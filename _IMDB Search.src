@@ -1,0 +1,456 @@
+### Mp3tag parsing for imdb.com
+###
+### 2010-10-08 created by Monty, based upon work by dano
+###
+### Save it in your Mp3tag data directory, i.e.
+### C:\Documents and Settings\*username*\Application Data\Mp3tag\data\sources
+###
+
+[Name]=imdb.com
+[BasedOn]=www.imdb.com
+[IndexUrl]=http://www.imdb.com/find?s=tt&q=%s
+[AlbumUrl]=http://www.imdb.com/title/
+[WordSeperator]=%20
+[IndexFormat]=%_url%|%Title%|%Year%|%Description%
+[SearchBy]=%title%
+
+#############################################################################
+## Search Index
+#############################################################################
+[ParserScriptIndex]=...
+
+debug "on" "c:\zDebug\debug_imdb_m1a.txt" "10"
+#debugwriteinput "C:\zDebug\imdb.html"
+
+findline "<td valign=\"top\"><a href=" 1 1
+replace "<h2 class=\"first\">Popular Results</h2>" ""
+unspace
+
+if "<p"
+killtag "em"
+killtag "/em"
+
+regexpreplace "\s{2,}" " "
+
+findinline "<tr>"
+do
+	# Url
+	findinline "<td align=\"right\""
+	findinline "<a href=\"/title/"
+	sayuntil "\""
+	say "|"
+
+	# Title	
+	findinline ">"
+	sayuntil "</a>"
+	say "|"
+
+	# Year
+	movechar 4
+	if " ("
+		movechar 2
+		sayuntil ")"
+	endif
+	say "|"
+
+      # Desc
+      if ") <br>"
+    	findinline "<br>"
+    	sayuntil "</td>"
+	endif
+	
+	saynewline
+	
+	findinline "</tr>" 1 1
+	
+while "<tr>" 100
+
+else
+	findline "<html" -1
+#	findline "id=\"tn15title\">"
+	sayoutput "CurrentUrl"
+	say "|"
+	say "|"
+	say "|"
+#	exit
+endif
+
+#############################################################################
+## Result Parsing (Album)
+#############################################################################
+[ParserScriptAlbum]=...
+
+debug "on" "c:\zDebug\debug_imdb_m1b.txt" "10"
+#debugwriteinput "C:\zDebug\imdb.html"
+
+#############################################################################
+## TV Series
+##
+findline "<h2 class=\"tv_header\">" 1 1
+
+if "<h2"
+
+	outputto "ITUNESMEDIATYPE"
+	say "TV Show"
+
+	moveline 1
+	outputto "TVShow"
+	sayregexp "\">\K[^<]+(?=</a)"
+
+	#######################################################################
+	## Episode Title
+	##
+	outputto "Title"
+	findline "<html" -1
+	findline "<h1 class=\"header\">"
+	moveline 1
+	sayuntil "~"
+
+	#######################################################################
+	## Series & Episode
+	##
+	findline "(TV episode" 1 1
+	killtag "span"
+	killtag "/span"
+	unspace
+
+	if "(TV episode"
+
+		outputto "Year"
+		movechar 12
+		saynextnumber
+		say "-01-01"
+
+		outputto "TVSeason"
+		findinline "#"
+		sayuntil "."
+
+		outputto "TVEpisode"
+		movechar 1
+		saynextnumber
+
+		outputto "Album"
+		sayoutput "TVShow"
+		outputto "Discnumber"
+		sayoutput "TVSeason"
+		outputto "Track"
+		sayoutput "TVEpisode"
+
+
+		findline "Original Air Date" 1 1
+		
+		if "<h4"
+			moveline 1
+			outputto "Airdate"
+			sayuntil "~"
+		endif
+
+	endif
+
+else
+	#######################################################################
+	## Movie
+	##
+	outputto "ITUNESMEDIATYPE"
+	say "Movie"
+
+	#######################################################################
+	## Movie Title
+	##
+	outputto "Title"
+	findline "<html" -1
+	findline "<h1 class=\"header\">"
+	moveline 1
+	sayuntil "~"
+
+	#######################################################################
+	## Year
+	##
+	outputto "Year"
+	findline "<html" -1
+	findline "href=\"/year/" 1 1
+
+	if "href="
+		findinline "/\">"
+		saynextnumber
+		say "-01-01"
+	endif
+endif
+
+#############################################################################
+## IMDB ID
+##
+findline "<html" -1
+outputto "IMDB ID"
+findline "http://www.imdb.com/title/"
+findinline "http://www.imdb.com/title/"
+sayuntil "/"
+
+#############################################################################
+## Poster / Cover
+##
+findline "<html" -1
+findline "id=\"img_primary\""
+unspace
+findinline "id="
+
+if "\"img_primary\""
+	findline "img src=\""
+	findinline "src=\""
+	outputto "coverurl"
+	sayuntil "\""
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Director(s)
+##
+findline "<html" -1
+findline "Director" 1 1
+unspace
+if "Director"
+	outputto "Director"
+	joinuntil "</div>"
+	sayregexp "\">\K[^<]+(?=</a)" ","
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Producer(s)
+##
+findline "<html" -1
+findline "Produced by" 1 1
+unspace
+if "<hr/>"
+	findinline "Produced by"
+	outputto "Producers"
+	joinuntil "</table>"
+	sayregexp "(?<=/\">)[^<]+(?=<)" "/" "</table>"
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Writer(s)
+##
+findline "<html" -1
+findline "Writers" 1 1
+unspace
+if "Writers"
+	outputto "composer"
+	joinuntil "</div>"
+	sayregexp "\">\K[^<]+(?=</a)" ","
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Release Date
+##
+findline "<html" -1
+findline "Release Date:" 1 1
+
+if "<h4"
+	unspace
+	findinline "Release "
+
+	ifnot  "Date:"
+		findline "<html" -1
+		exit
+	else
+		moveline 1
+		outputto "ReleaseDate"
+		sayuntil "~"
+
+		regexpreplace "\([^)]+\)" ""
+		replace "January" "-01-"
+		replace "February" "-02-"
+		replace "March" "-03-"
+		replace "April" "-04-"
+		replace "May" "-05-"
+		replace "June" "-06-"
+		replace "July" "-07-"
+		replace "August" "-08-"
+		replace "September" "-09-"
+		replace "October" "-10-"
+		replace "November" "-11-"
+		replace "December" "-12-"
+		regexpreplace "\s+" ""
+		regexpreplace "^(\d-)" "0$1"
+		regexpreplace "(\d+)-(\d+)-(\d\d\d\d)" "$3-$2-$1"
+
+		outputto "ReleaseTime"
+		sayrest
+
+		set "Year"
+		outputto "Year"
+		sayoutput "ReleaseTime"
+	endif
+endif
+
+#############################################################################
+## Cast
+##
+findline "<html" -1
+outputto "ARTIST"
+findline "<table class=\"cast_list\">" 1 1
+
+ifnot "<table"
+else
+	joinuntil "</table>"
+	regexpreplace "\s{2,}" " "
+	findinline "<tr" 1 1
+
+	do
+		findinline "<td class="name">"
+		findinline ">"
+		sayuntil "</a>"
+
+		findinline "</tr>"
+		movechar 1
+
+		if "<tr"
+			say ","
+		endif
+	
+	while "<tr" 100
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Plot
+##
+findline "<html" -1
+findline "<h2>Storyline</h2>" 1 1
+if  "<h2"
+	moveline 2
+
+	ifnot "<span"
+		movechar 3
+		outputto "itunespodcastdesc"
+		sayuntil "~"
+	endif
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Keywords
+##
+findline "<html" -1
+findline "Keywords:</h4>" 1 1
+
+if  "<h4"
+	moveline 1
+#	joinuntil "</div>"
+	outputto "IMDB Keywords"
+	sayregexp "\">\K[^<]+(?=</a)" ","
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Tag Line
+##
+findline "<html" -1
+findline "Taglines:</h4>" 1 1
+
+if "<h4"
+	unspace
+	moveline 1
+	outputto "Tagline"
+	sayuntil "~"
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Genres
+##
+findline "<html" -1
+findline ">Genres:</h4>" 1 1
+
+if  "<h4"
+	moveline 1
+#	joinuntil "</div>"
+	outputto "Genre"
+	sayregexp "\">\K[^<]+(?=</a)" ","
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Certificate(s)
+##
+findline "<html" -1
+findline "<h4>Motion Picture Rating" 1 1
+
+if  "<h4"
+	moveline 1
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Country
+##
+findline "<html" -1
+findline "Country:</h4>" 1 1
+
+if  "<h4"
+	joinuntil "</div>"
+	outputto "Country"
+	sayregexp "\">\K[^<]+(?=</a)" ","
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Language
+##
+findline "<html" -1
+findline "Language:</h4>" 1 1
+
+if  "<h4"
+	joinuntil "</div>"
+	outputto "Language"
+	sayregexp "\">\K[^<]+(?=</a)" ","
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Studio/Producer
+##
+findline "<html" -1
+findline "Production Co:</h4>" 1 1
+
+if "<h4"
+	moveline 3
+	outputto "Producer"
+	sayregexp "\">\K[^<]+(?=</a)" ","
+else
+	findline "<html" -1
+endif
+
+#############################################################################
+## Description
+##
+findline "<html" -1
+findline "<td id=\"overview-top\">" 1 1
+
+if "<td"
+	outputto "Comment"
+	joinuntil "<div class=\"txt-block\">"
+	regexpreplace "\s{2,}" " "
+	findinline "<p>"
+	if "<p>"
+		movechar 3
+		sayuntil "</p>"
+	endif
+endif
+
+#############################################################################
