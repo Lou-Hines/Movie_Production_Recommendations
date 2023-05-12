@@ -1,4 +1,5 @@
-Movie Production Recommendations
+# Movie Production Recommendations
 
-![Best Performing Genres by Profit](/Users/jamiecarnevale/Documents/Flatiron/Projects/Phase 
-1/movrec1.jpg)# 
+![Best Performing Genres by Profit](ImagesOfPlotsFinal/movierec1.jpg)
+
+n
