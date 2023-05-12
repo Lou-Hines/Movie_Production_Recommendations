@@ -2,23 +2,27 @@
 #### Authors: Lou Hines and Jamie Carnevale
 ## Overview
 Microsoft is entering the film industry! By making data-oriented business decisions in this market, Microsoft can make a large amount of profit. 
+
 ## Business Understanding
-The film industry has its fair share of business projects (movies) that either are huge successes and lead to enormous profits, or they end up financially draining the production companies that fund them. By looking at well-documented historical clean data, we have found important trends that Microsoft's new division can leverage. From these trends, we have created three business recommendations for Microsoft that will help them increase their liklihood of high profitablity and will ensure that they thoroughly avoid risk of financially draining projects.
+The film industry is a gamble. It has its fair share of movies that are huge successes, but many end up financially draining the production companies funding them. By looking at cleaned historcal data, we have found important trends that Microsoft's new division can leverage so as to avoid these risks and maximize their profits. From our insights, we have created three business recommendations for Microsoft that will help them increase this likelihood, while utilizing the company's unique and mature global reputation and reach.
 
-### We pulled data from leading industry repositories such as Box Office Mojo and IMDB.
+### We pulled data from leading industry repositories such as Box Office Mojo and IMDB. IMDB in particular has a very large dataset from which to glean, enhancing the meaning of our results.
 
-## Most Profitable Genres
-- The four most profitable genres: Animation, Science Fiction, Adventure, and Action
--   While this data is sorted by median, these genres have a big upside potential as well
-- Some less popular genres such as Animation are highly profitable, whereas some pervasive genres such as Drama are not nearly as profitable
+## We Discovered and Analyzed the Most Profitable Genres:
+-  Dwarfing the competition, we have: Animation, Science Fiction, Adventure, and Action
+-  Our analysis shows wide spreads of profitability by many genres, including some of the top four.
+-  Popuarity isn't everything: some less popular genres such as Animation are highly profitable, whereas some pervasive genres such as Drama 
+   aren't nearly as profitable.
+   
 ![Best Performing Genres by Profit](ImagesOfPlotsFinal/movierec1.jpg)
 
-## Safest Genres: Animation and Adventure
-- Specifically, Animation and Adventure have very low risks of being financially draining (negative profitablity)
+## Reduce Risk: Safest Genres
+- Animation and Adventure have very low risks of being financially draining (negative profitablity), while Action and Sci-Fi have
+  larger odds of being duds. Since Microsoft is not known to be a risk-prone company, we advise they continue in this vein. 
 ![Least Risky Genres](ImagesOfPlotsFinal/movierec2.jpg)
 
 ## Focus on Foreign Markets
-- Movies that outperform in foreign markets vs domestic markets have a much higher overall profitability. By focusing on having a wide appeal to foreign audiences, Microsoft can further increase their chances to make highly profitable films
+- Movies that outperform (as a share of world gross) in foreign markets vs. domestic markets have a much higher overall profitability. By focusing on having a wide appeal to foreign audiences, Microsoft can further increase their chances to make highly profitable films. In these globally uncertain times, having a safe and broad appeal is more important than ever.
 
 | Animation | Adventure |
 |:---:|:---:| 
@@ -26,12 +30,14 @@ The film industry has its fair share of business projects (movies) that either a
 
 ## Conclusion and Next Steps
 ### Conclusion
-- Focus on the most profitable and riskless genres: Animation and Adventure
-- Catering towards foreign markets will increase profits Next Steps
+- Further analyze the most profitable and least risky genres, Animation and Adventure
+- Catering towards foreign markets will increase profits 
+
 ### Next Steps
-- Explore directors and writers and their impact on profit
-- Explore different combinations of high profit low risk genres
+- Explore different combinations of high-profit, low-risk genres
 - Explore successful films that were produced in foreign markets
+- Take a long-view: look at long-term historical trends
+- Explore directors and writers and their impact on profit
 
 ## Contact Information
 | Name | Email | LinkedIn |
