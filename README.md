@@ -1,4 +1,4 @@
-# Microsoft Enters the Movie Industry
+# Microsoft Enters the Film Industry
 #### Authors: Lou Hines and Jamie Carnevale
 ## Overview
 Microsoft is entering the film industry! By making data-oriented business decisions in this market, Microsoft can make a large amount of profit. 
@@ -38,3 +38,7 @@ The film industry has its fair share of business projects (movies) that either a
 |:---:|:---:|:---:| 
 | Jamie Carnevale | jamie.c.carnevale@gmail.com | https://www.linkedin.com/in/jamie-carnevale-abb0b5219/ |
 | Lou Hines | hinesmeghan1@gmail.com | |
+
+## Link to Presentation
+[Microsoft Film Industry Recommendations.pdf](https://github.com/Lou-Hines/Movie_Production_Recommendations/files/11466555/Microsoft.Film.Industry.Recommendations.pdf)
+
