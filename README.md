@@ -4,7 +4,7 @@
 Microsoft is entering the film industry! By making data-oriented business decisions in this market, Microsoft can make a large amount of profit. 
 
 ## Business Understanding
-The film industry is a gamble. It has its fair share of movies that are huge successes, but many end up financially draining the production companies funding them. By looking at cleaned historcal data, we have found important trends that Microsoft's new division can leverage so as to avoid these risks and maximize their profits. From our insights, we have created three business recommendations for Microsoft that will help them increase this likelihood, while utilizing the company's unique and mature global reputation and reach.
+The film industry is a gamble. It has its fair share of movies that are huge successes, but many end up financially draining the production companies funding them. By looking at cleaned historical data, we have found important trends that Microsoft's new division can leverage so as to avoid these risks and maximize their profits. From our insights, we have created three business recommendations for Microsoft that will help them increase this likelihood, while utilizing the company's unique and mature global reputation and reach.
 
 ### We pulled data from leading industry repositories such as Box Office Mojo and IMDB. IMDB in particular has a very large dataset from which to glean, enhancing the meaning of our results.
 
