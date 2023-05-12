@@ -31,7 +31,7 @@ The film industry is a gamble. It has its fair share of movies that are huge suc
 ## Conclusion and Next Steps
 ### Conclusion
 - Further analyze the most profitable and least risky genres, Animation and Adventure
-- Catering towards foreign markets will increase profits 
+- Cater towards foreign markets to increase profits 
 
 ### Next Steps
 - Explore different combinations of high-profit, low-risk genres
